@@ -13,34 +13,47 @@ SDL_Window *win = NULL;
 SDL_Renderer *ren = NULL;
 FILE *conf = NULL;
 
+struct conf{
+  SDL_Keycode LEFT;
+  SDL_Keycode RIGHT;
+  SDL_Keycode UP;
+  SDL_Keycode DOWN;
+  SDL_Keycode ATTCK;
+  SDL_Keycode ALT;
+  SDL_Keycode USE;
+  SDL_Keycode JUMP;
+  SDL_Keycode CROUCH;
+  SDL_Keycode PAUSE;
+  int WIN_HEIGHT;
+  int WIN_WIDTH;
+}Conf;
+
 int init() {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0) {
-    printf("SDL Could Not Init Video And Or Events\n");
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FOO ERORR",
                              "FAILED To Init Video And Or Events", NULL);
-    return 1;
+    return SDL_SetError("FOO ERROR: FAILED To Init Video And Or Events %d", 1);
   }
   win = SDL_CreateWindow("FOO", 800, 600, SDL_WINDOW_VULKAN);
   if (win == NULL) {
-    printf("SDL ERROR: Can't Create Window\n");
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FOO ERROR",
                              "FAILED To Make The Window", NULL);
-    return 1;
+    return SDL_SetError("FOO ERROR: FAILED To Create Window %d", 1);
   }
   ren = SDL_CreateRenderer(win, NULL);
   if (ren == NULL) {
-    printf("SDL ERROR: Can't Create Renderer\n");
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "FOO ERROR",
                              "FAILED To Make Renderer", NULL);
     SDL_DestroyWindow(win);
     SDL_Quit();
-    return 1;
+    return SDL_SetError("FOO ERROR: FAILED To Create Renderer %d", 1);
   }
   conf = fopen("./conf.ini/", "rb");
   if (conf == NULL) {
-    printf("WARNING: Could Not Find Config File\n");
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "FOO WARNINIG", "Could Not Find Config File", win);
-    return 1;
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "FOO WARNINIG",
+                             "Could Not Find Config File", win);
+    
+    return SDL_SetError("FOO WARNING: FAILED To Find `conf.ini` %d", 1);
   } else {
     return 0;
   }
@@ -49,8 +62,6 @@ int init() {
 
 SDL_Event e;
 int shouldQuit = 1;
-
-uint8_t red = 0;
 
 int main() {
   init();
@@ -64,26 +75,32 @@ int main() {
       case SDL_EVENT_KEY_DOWN:
         switch (e.key.key) {
           case SDLK_UP:
-            red += 1;
-            break;
+            
+              break;
           case SDLK_DOWN:
-
+            
+              break;
           case SDLK_LEFT:
-
+            
+              break;
           case SDLK_RIGHT:
-
+            
+              break;
           case SDLK_Z:
-
+            
+              break;
           case SDLK_X:
-
+              
+              break;
           case SDLK_C:
-            red -= 10;
-            break;
+              
+              break;
         }
       }
     }
     SDL_RenderClear(ren);
-    SDL_SetRenderDrawColor(ren,red,128,200,255);
+    SDL_SetRenderDrawColor(ren,10,128,200,255);
+
     SDL_RenderPresent(ren);
   }
   SDL_DestroyRenderer(ren);
