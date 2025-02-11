@@ -13,7 +13,7 @@ SDL_Window *win = NULL;
 SDL_Renderer *ren = NULL;
 FILE *conf = NULL;
 
-struct conf{
+struct sConf{
   SDL_Keycode LEFT;
   SDL_Keycode RIGHT;
   SDL_Keycode UP;
@@ -22,11 +22,12 @@ struct conf{
   SDL_Keycode ALT;
   SDL_Keycode USE;
   SDL_Keycode JUMP;
-  SDL_Keycode CROUCH;
+  SDL_Keycode CROUCH_MOD;
+  SDL_Keycode RUN_MOD;
   SDL_Keycode PAUSE;
   int WIN_HEIGHT;
   int WIN_WIDTH;
-}Conf;
+}SConf;
 
 int init() {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == 0) {
@@ -48,14 +49,11 @@ int init() {
     SDL_Quit();
     return SDL_SetError("FOO ERROR: FAILED To Create Renderer %d", 1);
   }
-  conf = fopen("./conf.ini/", "rb");
+  conf = fopen("conf.ini/", "rb");
   if (conf == NULL) {
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "FOO WARNINIG",
                              "Could Not Find Config File", win);
-    
     return SDL_SetError("FOO WARNING: FAILED To Find `conf.ini` %d", 1);
-  } else {
-    return 0;
   }
   return 0;
 }
