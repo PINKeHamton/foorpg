@@ -1,7 +1,7 @@
 CC := clang
-CFLAGS = -g3 -lldb
+CFLAGS = -g3
 
-LIBS = -lSDL3 -lGL
+LIBS = -lSDL3 -lGL -ldl
 
-%.o: %.c
-    $(CC) $(CFLAGS) -c -o $@ $<
+all:
+	${CC} src/main.c glad/src/gl.c -Iglad/include ${LIBS} ${CFLAGS}
